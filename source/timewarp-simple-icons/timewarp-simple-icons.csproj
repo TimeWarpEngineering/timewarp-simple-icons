@@ -7,13 +7,13 @@
     <RootNamespace>TimeWarp.Simple.Icons</RootNamespace>
     <Authors>Steven T. Cramer</Authors>
     <Company>TimeWarp Enterprises</Company>
-    <Product>timewarp-heroicons</Product>
+    <Product>timewarp-simple-icons</Product>
     <Description>All of the simple-icons wrapped as Blazor components.</Description>
-    <PackageProjectUrl>https://github.com/TimeWarpEngineering/timewarp-heroicons</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/TimeWarpEngineering/timewarp-heroicons.git</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/TimeWarpEngineering/timewarp-simple-icons</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/TimeWarpEngineering/timewarp-simple-icons.git</RepositoryUrl>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <RepositoryType>git</RepositoryType>
-    <PackageTags>timewarp; blazor; icons; tailwind; heroicons</PackageTags>
+    <PackageTags>timewarp; blazor; icons; tailwind; simple icons; simpleicons</PackageTags>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageIcon>Logo.png</PackageIcon>
     <Version>7.5.0</Version>
