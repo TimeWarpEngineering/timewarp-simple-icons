@@ -8,7 +8,7 @@
     <Authors>Steven T. Cramer</Authors>
     <Company>TimeWarp Enterprises</Company>
     <Product>timewarp-heroicons</Product>
-    <Description>All of the Tailwind HeroIcons wrapped as Blazor components.</Description>
+    <Description>All of the simple-icons wrapped as Blazor components.</Description>
     <PackageProjectUrl>https://github.com/TimeWarpEngineering/timewarp-heroicons</PackageProjectUrl>
     <RepositoryUrl>https://github.com/TimeWarpEngineering/timewarp-heroicons.git</RepositoryUrl>
     <PackageReadmeFile>README.md</PackageReadmeFile>
@@ -16,7 +16,7 @@
     <PackageTags>timewarp; blazor; icons; tailwind; heroicons</PackageTags>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageIcon>Logo.png</PackageIcon>
-    <Version>7.5.0+alpha.1</Version>
+    <Version>7.5.0-alpha.2</Version>
   </PropertyGroup>
 
   <ItemGroup>
