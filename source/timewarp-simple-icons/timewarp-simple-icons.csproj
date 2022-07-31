@@ -15,9 +15,9 @@
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <RepositoryType>git</RepositoryType>
     <PackageTags>timewarp; blazor; icons; tailwind; simple icons; simpleicons</PackageTags>
-    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageLicenseExpression>CC0-1.0</PackageLicenseExpression>
     <PackageIcon>Logo.png</PackageIcon>
-    <Version>7.5.2</Version>
+    <Version>7.5.3</Version>
   </PropertyGroup>
 
   <ItemGroup>
