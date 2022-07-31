@@ -5,7 +5,7 @@
 [![nuget](https://img.shields.io/nuget/dt/timewarp-simple-icons?logo=nuget)](https://www.nuget.org/packages/timewarp-simple-icons/)
 [![Issues Open](https://img.shields.io/github/issues/TimeWarpEngineering/timewarp-simple-icons.svg?logo=github)](https://github.com/TimeWarpEngineering/timewarp-simple-icons/issues)
 [![Forks](https://img.shields.io/github/forks/TimeWarpEngineering/timewarp-simple-icons)](https://github.com/TimeWarpEngineering/timewarp-simple-icons)
-[![License](https://img.shields.io/github/license/TimeWarpEngineering/timewarp-simple-icons.svg?style=flat-square&logo=github)](https://unlicense.org)
+[![License](https://img.shields.io/github/license/TimeWarpEngineering/timewarp-simple-icons)](https://unlicense.org)
 [![Twitter](https://img.shields.io/twitter/url?style=social&url=https%3A%2F%2Fgithub.com%2FTimeWarpEngineering%2Ftimewarp-simple-icons)](https://twitter.com/intent/tweet?url=https://github.com/TimeWarpEngineering/timewarp-simple-icons)
 
 [![Twitter](https://img.shields.io/twitter/follow/StevenTCramer.svg)](https://twitter.com/intent/follow?screen_name=StevenTCramer)
