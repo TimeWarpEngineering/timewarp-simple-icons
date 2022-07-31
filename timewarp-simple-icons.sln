@@ -1,27 +1,62 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.30114.105
+# Visual Studio Version 17
+VisualStudioVersion = 17.2.32630.192
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Source", "Source", "{307D8631-8FBE-41B9-B5AC-9245F15AFFA3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "timewarp-simple-icons", "Source\timewarp-simple-icons\timewarp-simple-icons.csproj", "{944BF107-FB19-4971-9338-C6E264B552D6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "timewarp-simple-icons", "Source\timewarp-simple-icons\timewarp-simple-icons.csproj", "{944BF107-FB19-4971-9338-C6E264B552D6}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tools", "Tools", "{9516AE57-FD52-4968-9560-83D53658CFA9}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "transform", "tools\transform\transform.csproj", "{68D2AB05-841F-40D7-A911-A17CC463635E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{ADD86969-6F6B-43B1-98A3-202EA080FAB8}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "timewarp-simple-icons-tests", "tests\timewarp-simple-icons-tests\timewarp-simple-icons-tests.csproj", "{E1D09391-FFC2-4929-9A91-14AAF24251CE}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "sample-app", "tests\sample-app\sample-app.csproj", "{6F347A36-AE50-40AA-9B32-EE87F0A39964}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Scripts", "Scripts", "{A5F4662F-71B2-4863-B2B4-B511D1B5D0FA}"
+	ProjectSection(SolutionItems) = preProject
+		publish.ps1 = publish.ps1
+		run-sample.ps1 = run-sample.ps1
+		transform.ps1 = transform.ps1
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
-	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{944BF107-FB19-4971-9338-C6E264B552D6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{944BF107-FB19-4971-9338-C6E264B552D6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{944BF107-FB19-4971-9338-C6E264B552D6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{944BF107-FB19-4971-9338-C6E264B552D6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{68D2AB05-841F-40D7-A911-A17CC463635E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{68D2AB05-841F-40D7-A911-A17CC463635E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{68D2AB05-841F-40D7-A911-A17CC463635E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{68D2AB05-841F-40D7-A911-A17CC463635E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E1D09391-FFC2-4929-9A91-14AAF24251CE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E1D09391-FFC2-4929-9A91-14AAF24251CE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E1D09391-FFC2-4929-9A91-14AAF24251CE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E1D09391-FFC2-4929-9A91-14AAF24251CE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6F347A36-AE50-40AA-9B32-EE87F0A39964}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6F347A36-AE50-40AA-9B32-EE87F0A39964}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6F347A36-AE50-40AA-9B32-EE87F0A39964}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6F347A36-AE50-40AA-9B32-EE87F0A39964}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{944BF107-FB19-4971-9338-C6E264B552D6} = {307D8631-8FBE-41B9-B5AC-9245F15AFFA3}
+		{68D2AB05-841F-40D7-A911-A17CC463635E} = {9516AE57-FD52-4968-9560-83D53658CFA9}
+		{E1D09391-FFC2-4929-9A91-14AAF24251CE} = {ADD86969-6F6B-43B1-98A3-202EA080FAB8}
+		{6F347A36-AE50-40AA-9B32-EE87F0A39964} = {ADD86969-6F6B-43B1-98A3-202EA080FAB8}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {046E54E7-9D24-4CED-AC35-363576420F1F}
 	EndGlobalSection
 EndGlobal

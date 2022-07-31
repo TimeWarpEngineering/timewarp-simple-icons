@@ -4,9 +4,31 @@
     <TargetFramework>net6.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <RootNamespace>timewarp_simple_icons</RootNamespace>
+    <RootNamespace>TimeWarp.SimpleIcons</RootNamespace>
+    <Authors>Steven T. Cramer</Authors>
+    <Company>TimeWarp Enterprises</Company>
+    <Product>timewarp-heroicons</Product>
+    <Description>All of the Tailwind HeroIcons wrapped as Blazor components.</Description>
+    <PackageProjectUrl>https://github.com/TimeWarpEngineering/timewarp-heroicons</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/TimeWarpEngineering/timewarp-heroicons.git</RepositoryUrl>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <RepositoryType>git</RepositoryType>
+    <PackageTags>timewarp; blazor; icons; tailwind; heroicons</PackageTags>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageIcon>Logo.png</PackageIcon>
+    <Version>1.0.0+alpha.1</Version>
   </PropertyGroup>
 
+  <ItemGroup>
+    <None Include="..\..\Assets\Logo.png">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+    <None Include="..\..\README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
 
   <ItemGroup>
     <SupportedPlatform Include="browser" />
