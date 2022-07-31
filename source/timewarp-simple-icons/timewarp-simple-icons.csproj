@@ -16,7 +16,7 @@
     <PackageTags>timewarp; blazor; icons; tailwind; simple icons; simpleicons</PackageTags>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageIcon>Logo.png</PackageIcon>
-    <Version>7.5.0</Version>
+    <Version>7.5.1</Version>
   </PropertyGroup>
 
   <ItemGroup>
