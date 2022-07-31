@@ -3,7 +3,7 @@
 [![Discord](https://img.shields.io/discord/715274085940199487?logo=discord)](https://discord.gg/7F4bS2T)
 [![nuget](https://img.shields.io/nuget/v/timewarp-simple-icons?logo=nuget)](https://www.nuget.org/packages/timewarp-simple-icons/)
 [![nuget](https://img.shields.io/nuget/dt/timewarp-simple-icons?logo=nuget)](https://www.nuget.org/packages/timewarp-simple-icons/)
-[![Issues Open](https://img.shields.io/github/issues/TimeWarpEngineering/timewarp-simple-icons.svg?logo=github)](https://github.com/TimeWarpEngineering/timewarp-simple-icons/issues)
+[![Issues Open](https://img.shields.io/github/issues/TimeWarpEngineering/timewarp-simple-icons?logo=github)](https://github.com/TimeWarpEngineering/timewarp-simple-icons/issues)
 [![Forks](https://img.shields.io/github/forks/TimeWarpEngineering/timewarp-simple-icons)](https://github.com/TimeWarpEngineering/timewarp-simple-icons)
 [![License](https://img.shields.io/github/license/TimeWarpEngineering/timewarp-simple-icons?logo=github)](https://unlicense.org)
 [![Twitter](https://img.shields.io/twitter/url?style=social&url=https%3A%2F%2Fgithub.com%2FTimeWarpEngineering%2Ftimewarp-simple-icons)](https://twitter.com/intent/tweet?url=https://github.com/TimeWarpEngineering/timewarp-simple-icons)
@@ -45,7 +45,7 @@ dotnet add package timewarp-simple-icons
 
 ## Unlicense
 
-[![License](https://img.shields.io/github/license/TimeWarpEngineering/timewarp-simple-icons.svg?style=flat-square&logo=github)](https://unlicense.org)
+[![License](https://img.shields.io/github/license/TimeWarpEngineering/timewarp-simple-icons?logo=github)](https://unlicense.org)
 
 ## Contributing
 
