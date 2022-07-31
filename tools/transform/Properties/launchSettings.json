@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "transform": {
+      "commandName": "Project",
+      "commandLineArgs": "\"C:\\git\\github\\simple-icons\\simple-icons\\icons\" \"C:\\git\\github\\TimeWarpEngineering\\timewarp-simple-icons\\source\\timewarp-simple-icons\\icons\""
+    }
+  }
+}

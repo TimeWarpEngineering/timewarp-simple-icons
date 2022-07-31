@@ -1,0 +1,4 @@
+﻿@namespace TimeWarp.Simple.Icons
+@inherits SimpleIconBase
+
+{{svg}}
