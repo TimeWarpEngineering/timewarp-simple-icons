@@ -5,7 +5,7 @@
 [![nuget](https://img.shields.io/nuget/dt/timewarp-simple-icons?logo=nuget)](https://www.nuget.org/packages/timewarp-simple-icons/)
 [![Issues Open](https://img.shields.io/github/issues/TimeWarpEngineering/timewarp-simple-icons.svg?logo=github)](https://github.com/TimeWarpEngineering/timewarp-simple-icons/issues)
 [![Forks](https://img.shields.io/github/forks/TimeWarpEngineering/timewarp-simple-icons)](https://github.com/TimeWarpEngineering/timewarp-simple-icons)
-[![License](https://img.shields.io/github/license/TimeWarpEngineering/timewarp-simple-icons.svg?style=flat-square&logo=github)](https://github.com/TimeWarpEngineering/timewarp-simple-icons/issues)
+[![License](https://img.shields.io/github/license/TimeWarpEngineering/timewarp-simple-icons.svg?style=flat-square&logo=github)](https://unlicense.org)
 [![Twitter](https://img.shields.io/twitter/url?style=social&url=https%3A%2F%2Fgithub.com%2FTimeWarpEngineering%2Ftimewarp-simple-icons)](https://twitter.com/intent/tweet?url=https://github.com/TimeWarpEngineering/timewarp-simple-icons)
 
 [![Twitter](https://img.shields.io/twitter/follow/StevenTCramer.svg)](https://twitter.com/intent/follow?screen_name=StevenTCramer)
@@ -21,7 +21,7 @@ All the [simple-icons](https://github.com/simple-icons/simple-icons) wrapped as 
 
 If you like or are using this project please give it a star. Thank you!
 
-## Example
+## Usage
 
 ```razor
 <GithubIcon class="w-6 h-6"/>
@@ -60,7 +60,7 @@ Sometimes the github notifications get lost in the shuffle.  If you file an [iss
 
 [![Discord](https://img.shields.io/discord/715274085940199487?logo=discord)](https://discord.gg/7F4bS2T)
 
-## Reference
+## References
 
 https://github.com/simple-icons/simple-icons
 
@@ -70,4 +70,7 @@ https://github.com/simple-icons/simple-icons
 dotnet new sln
 dotnet new razorclasslib -n timewarp-simple-icons
 dotnet sln add .\Source\timewarp-simple-icons\timewarp-simple-icons.csproj
+dotnet new tool-manifest
+dotnet tool install dotnet-cleanup
+dotnet cleanup -y
 ```
