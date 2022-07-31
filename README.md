@@ -1,7 +1,6 @@
 [![Dotnet](https://img.shields.io/badge/dotnet-6.0-blue)](https://dotnet.microsoft.com)
 [![Stars](https://img.shields.io/github/stars/TimeWarpEngineering/timewarp-simple-icons?logo=github)](https://github.com/TimeWarpEngineering/timewarp-simple-icons)
 [![Discord](https://img.shields.io/discord/715274085940199487?logo=discord)](https://discord.gg/7F4bS2T)
-[![workflow](https://github.com/TimeWarpEngineering/timewarp-simple-icons/actions/workflows/release-build.yml/badge.svg)](https://github.com/TimeWarpEngineering/timewarp-simple-icons/actions)
 [![nuget](https://img.shields.io/nuget/v/timewarp-simple-icons?logo=nuget)](https://www.nuget.org/packages/timewarp-simple-icons/)
 [![nuget](https://img.shields.io/nuget/dt/timewarp-simple-icons?logo=nuget)](https://www.nuget.org/packages/timewarp-simple-icons/)
 [![Issues Open](https://img.shields.io/github/issues/TimeWarpEngineering/timewarp-simple-icons.svg?logo=github)](https://github.com/TimeWarpEngineering/timewarp-simple-icons/issues)
@@ -61,11 +60,11 @@ Sometimes the github notifications get lost in the shuffle.  If you file an [iss
 
 [![Discord](https://img.shields.io/discord/715274085940199487?logo=discord)](https://discord.gg/7F4bS2T)
 
-# Reference
+## Reference
 
 https://github.com/simple-icons/simple-icons
 
-## Commands used
+### Commands used
 
 ```PowerShell
 dotnet new sln
