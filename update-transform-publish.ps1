@@ -1,8 +1,8 @@
-﻿Push-Location $PSScriptRoot/tools/transform
+﻿Push-Location $PSScriptRoot
 try {
-  update.ps1
-  transform.ps1
-  publish.ps1
+  . .\update.ps1
+  . .\transform.ps1
+  . .\publish.ps1
 }
 finally {
    Pop-Location
