@@ -4,7 +4,7 @@
     <TargetFramework>net6.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <RootNamespace>TimeWarp.SimpleIcons</RootNamespace>
+    <RootNamespace>TimeWarp.Simple.Icons</RootNamespace>
     <Authors>Steven T. Cramer</Authors>
     <Company>TimeWarp Enterprises</Company>
     <Product>timewarp-heroicons</Product>
@@ -16,7 +16,7 @@
     <PackageTags>timewarp; blazor; icons; tailwind; heroicons</PackageTags>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageIcon>Logo.png</PackageIcon>
-    <Version>7.5.0-alpha.2</Version>
+    <Version>7.5.0</Version>
   </PropertyGroup>
 
   <ItemGroup>
