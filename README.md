@@ -14,7 +14,7 @@
 
 # timewarp-simple-icons
 
-![TimeWarp Logo](Assets/Logo.png)
+![TimeWarp Logo](assets/Logo.png)
 
 All the [simple-icons](https://github.com/simple-icons/simple-icons) wrapped as Blazor components.
 
