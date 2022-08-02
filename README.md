@@ -15,7 +15,8 @@
 
 ![TimeWarp Logo](assets/Logo.png)
 
-All the [simple-icons](https://github.com/simple-icons/simple-icons) wrapped as Blazor components.
+All 2299 [simple-icons](https://github.com/simple-icons/simple-icons) wrapped as Blazor components.
+See and search all at https://simpleicons.org/
 
 ## Give a Star! :star:
 
