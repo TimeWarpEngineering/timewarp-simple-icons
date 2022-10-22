@@ -55,6 +55,11 @@ Time is of the essence.  Before developing a Pull Request I recommend opening a 
 Please feel free to make suggestions and help out with the [documentation](https://timewarpengineering.github.io/timewarp-simple-icons/).
 Please refer to [Markdown](http://daringfireball.net/projects/markdown/) for how to write markdown files.
 
+**Steps to regenerate with transform script**
+Step 1: please clone [simple-icons](https://github.com/simple-icons/simple-icons), Required for regenerating respective razor equivalent icons.
+Step 2: Update transform.ps1 with valid path.
+Step 3: transform.ps1 runs the tools/transform project, which transforms the cloned [simple-icons](https://github.com/simple-icons/simple-icons) into razor files.
+
 ## Contact
 
 Sometimes the github notifications get lost in the shuffle.  If you file an [issue](https://github.com/TimeWarpEngineering/timewarp-simple-icons/issues) and don't get a response in a timely manner feel free to ping on our [Discord server](https://discord.gg/A55JARGKKP).
