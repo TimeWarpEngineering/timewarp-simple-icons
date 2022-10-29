@@ -1,6 +1,7 @@
 ﻿Push-Location $PSScriptRoot/tools/transform
 try {
-    dotnet run --project transform.csproj -- "J:\Open Source\simple-icons\icons" "J:\Open Source\timewarp-simple-icons\Source\timewarp-simple-icons\icons"
+  if (!$simple_icons) { throw "simple_icons should be set to the root path of where you cloned the simple-icons repo"}
+  dotnet run --project transform.csproj -- "$simple_icons\icons" "$PSScriptRoot\..\Source\timewarp-simple-icons\icons"
 }
 finally {
     Pop-Location
