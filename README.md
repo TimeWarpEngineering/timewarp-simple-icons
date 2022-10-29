@@ -55,14 +55,23 @@ Time is of the essence.  Before developing a Pull Request I recommend opening a 
 Please feel free to make suggestions and help out with the [documentation](https://timewarpengineering.github.io/timewarp-simple-icons/).
 Please refer to [Markdown](http://daringfireball.net/projects/markdown/) for how to write markdown files.
 
-**Steps to regenerate with transform script**
-Step 1: please clone [simple-icons](https://github.com/simple-icons/simple-icons), Required for regenerating respective razor equivalent icons.
-Step 2: Update transform.ps1 with valid path.
-Step 3: transform.ps1 runs the tools/transform project, which transforms the cloned [simple-icons](https://github.com/simple-icons/simple-icons) into razor files.
+### Steps to publish NuGet package
+
+* [ ] Clone the [simple-icons](https://github.com/simple-icons/simple-icons) repo.
+* [ ] Set the PowerShell variable `$simple_icons` to the path where you cloned the simple-icons repo in the above step. (Add `$simple_icons = "<PATH where you stored the repp>"` to your profile)
+* [ ] Ensure your copy of the simple-icons repo is up to date by running (`update.ps1`).
+* [ ] Set the Version in `timewarp-simple-icons/source/timewarp-simple-icons/timewarp-simple-icons.csproj` to the same version that is in `simple-icons/package.json`.
+* [ ] Transform the cloned [simple-icons](https://github.com/simple-icons/simple-icons) into razor files by running `transform.ps1`.
+* [ ] Run the test app to make sure the icons render properly.
+* [ ] Update `releases.md`.
+* [ ] Commit and push the changes to GitHub.
+* [ ] Set the PowerShell variable `$Nuget_Key` value.
+* [ ] Publish to NuGet by running `publish.ps1`.
+* [ ] Tweet to let people know.
 
 ## Contact
 
-Sometimes the github notifications get lost in the shuffle.  If you file an [issue](https://github.com/TimeWarpEngineering/timewarp-simple-icons/issues) and don't get a response in a timely manner feel free to ping on our [Discord server](https://discord.gg/A55JARGKKP).
+Sometimes the GitHub notifications get lost in the shuffle.  If you file an [issue](https://github.com/TimeWarpEngineering/timewarp-simple-icons/issues) and don't get a response in a timely manner feel free to ping on our [Discord server](https://discord.gg/A55JARGKKP).
 
 [![Discord](https://img.shields.io/discord/715274085940199487?logo=discord)](https://discord.gg/7F4bS2T)
 
