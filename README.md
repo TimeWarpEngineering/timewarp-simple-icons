@@ -15,7 +15,7 @@
 
 ![TimeWarp Logo](assets/Logo.png)
 
-All 2299 [simple-icons](https://github.com/simple-icons/simple-icons) wrapped as Blazor components.
+All [simple-icons](https://github.com/simple-icons/simple-icons) wrapped as Blazor components.
 See and search all at https://simpleicons.org/
 
 ## Give a Star! :star:
@@ -44,7 +44,7 @@ You can see the latest NuGet packages from the official [TimeWarp NuGet page](ht
 dotnet add package timewarp-simple-icons
 ```
 
-## Unlicense
+## License
 
 [![License](https://img.shields.io/github/license/TimeWarpEngineering/timewarp-simple-icons?logo=github)](https://unlicense.org)
 
@@ -71,7 +71,7 @@ Please refer to [Markdown](http://daringfireball.net/projects/markdown/) for how
 
 ## Contact
 
-Sometimes the GitHub notifications get lost in the shuffle.  If you file an [issue](https://github.com/TimeWarpEngineering/timewarp-simple-icons/issues) and don't get a response in a timely manner feel free to ping on our [Discord server](https://discord.gg/A55JARGKKP).
+Sometimes the GitHub notifications get lost in the shuffle.  If you file an [issue](https://github.com/TimeWarpEngineering/timewarp-simple-icons/issues) and don't get a response in a timely manner feel free to contact us on our [Discord server](https://discord.gg/A55JARGKKP).
 
 [![Discord](https://img.shields.io/discord/715274085940199487?logo=discord)](https://discord.gg/7F4bS2T)
 
