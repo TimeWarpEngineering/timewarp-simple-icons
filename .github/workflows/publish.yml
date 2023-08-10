@@ -1,0 +1,26 @@
+name: Publish to NuGet
+
+on:
+  push:
+    branches:
+      - main # Trigger on push to the main branch
+  workflow_dispatch: # Allow manual kick off
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest # Use a Linux runner
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Setup .NET 6
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: '6.0.x' # Use .NET 6
+
+    - name: Set NuGet Key
+      run: echo "Nuget_Key=${{ secrets.PUBLISH_TO_NUGET_ORG }}" >> $GITHUB_ENV
+
+    - name: Publish to NuGet
+      run: pwsh .\publish.ps1 # Use PowerShell Core
