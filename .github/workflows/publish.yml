@@ -23,4 +23,5 @@ jobs:
       run: echo "Nuget_Key=${{ secrets.PUBLISH_TO_NUGET_ORG }}" >> $GITHUB_ENV
 
     - name: Publish to NuGet
-      run: pwsh .\publish.ps1 # Use PowerShell Core
+      run: ./publish.ps1
+      shell: pwsh # Use PowerShell Core
