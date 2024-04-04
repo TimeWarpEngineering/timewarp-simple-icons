@@ -1,5 +1,25 @@
 # Releases
 
+## 11.10.0
+
+* Update to simple-icons version 11.10.0
+
+
+## 11.9.0
+
+* Update to simple-icons version 11.9.0
+
+
+## 11.7.0
+
+* Update to simple-icons version 11.7.0
+
+
+## 11.6.0
+
+* Update to simple-icons version 11.6.0
+
+
 ## 9.9.0
 
 * Update to simple-icons version 9.9.0
