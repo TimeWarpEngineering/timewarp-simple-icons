@@ -1,5 +1,10 @@
 # Releases
 
+## 13.17.0
+
+* Update to simple-icons version 13.17.0
+
+
 ## 13.16.0
 
 * Update to simple-icons version 13.16.0
