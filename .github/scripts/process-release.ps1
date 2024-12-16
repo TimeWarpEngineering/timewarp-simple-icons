@@ -14,6 +14,9 @@ param(
     [string]$ForcePublish = "false"
 )
 
+# Convert ForcePublish to boolean
+$ForcePublish = [System.Convert]::ToBoolean($ForcePublish)
+
 function Compare-Versions {
     try {
         # Get latest simple-icons version
