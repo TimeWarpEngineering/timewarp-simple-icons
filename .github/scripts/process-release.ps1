@@ -11,15 +11,10 @@ param(
     [string]$NugetKey,
     
     [Parameter(Mandatory = $false)]
-    [string]$ForcePublish = "false"
+    [string]$ForcePublishString = "false"
 )
 
-Write-Host "Raw ForcePublish value: $ForcePublish"
-Write-Host "ForcePublish type before conversion: $($ForcePublish.GetType().FullName)"
-
-# Convert ForcePublish to boolean
-$ForcePublish = [System.Convert]::ToBoolean($ForcePublish)
-Write-Host "ForcePublish type after conversion: $($ForcePublish.GetType().FullName)"
+[bool]$ForcePublish = [System.Convert]::ToBoolean($ForcePublishString)
 Write-Host "Force publish: $ForcePublish"
 
 function Compare-Versions {
@@ -144,9 +139,6 @@ try {
     $needsUpdate = Compare-Versions
     Write-Host "Needs update: $needsUpdate"
     
-    Write-Host "Debug: ForcePublish value in main execution: $ForcePublish"
-    Write-Host "Debug: ForcePublish type in main execution: $($ForcePublish.GetType().FullName)"
-    
     if ($needsUpdate) {
         Write-Host "New version detected. Processing release..."
         Update-ProjectFiles -NewVersion $SimpleIconsVersion
@@ -155,7 +147,7 @@ try {
         Publish-ToNuGet
         Write-Host "Release processing completed successfully"
     }
-    elseif ($ForcePublish -eq $true) {
+    elseif ($ForcePublish) {
         Write-Host "Force publish requested. Processing release..."
         Update-ProjectFiles -NewVersion $SimpleIconsVersion
         Update-Icons
