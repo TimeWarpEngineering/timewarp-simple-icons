@@ -12,12 +12,18 @@ param(
 )
 
 try {
-  Write-Host "Git Token: $RepoToken"
+  Write-Host "Configuring git..."
   git config --local user.email "github-actions-bot@timewarp.enterprises"
   git config --local user.name "GitHub Actions Bot"
+  
+  Write-Host "Adding changes..."
   git add .
+  
+  Write-Host "Committing changes..."
   git commit -m "Update to simple-icons version $Version"
-  git push "https://github.com/$Repository.git" HEAD:main
+  
+  Write-Host "Pushing changes..."
+  git push "https://x-access-token:$RepoToken@github.com/$Repository.git" HEAD:main
   
   Write-Host "Successfully published changes to repository"
 }
