@@ -14,8 +14,12 @@ param(
     [string]$ForcePublish = "false"
 )
 
+Write-Host "Raw ForcePublish value: $ForcePublish"
+Write-Host "ForcePublish type before conversion: $($ForcePublish.GetType().FullName)"
+
 # Convert ForcePublish to boolean
 $ForcePublish = [System.Convert]::ToBoolean($ForcePublish)
+Write-Host "ForcePublish type after conversion: $($ForcePublish.GetType().FullName)"
 Write-Host "Force publish: $ForcePublish"
 
 function Compare-Versions {
@@ -31,7 +35,6 @@ function Compare-Versions {
         Write-Host "Latest simple-icons version: $SimpleIconsVersion"
         Write-Host "Current library version: $LibraryVersion"
         
-        # Explicitly return a boolean
         return $SimpleIconsVersion -ne $LibraryVersion
     }
     catch {
@@ -141,6 +144,9 @@ try {
     $needsUpdate = Compare-Versions
     Write-Host "Needs update: $needsUpdate"
     
+    Write-Host "Debug: ForcePublish value in main execution: $ForcePublish"
+    Write-Host "Debug: ForcePublish type in main execution: $($ForcePublish.GetType().FullName)"
+    
     if ($needsUpdate) {
         Write-Host "New version detected. Processing release..."
         Update-ProjectFiles -NewVersion $SimpleIconsVersion
@@ -149,7 +155,7 @@ try {
         Publish-ToNuGet
         Write-Host "Release processing completed successfully"
     }
-    elseif ($ForcePublish) {
+    elseif ($ForcePublish -eq $true) {
         Write-Host "Force publish requested. Processing release..."
         Update-ProjectFiles -NewVersion $SimpleIconsVersion
         Update-Icons
