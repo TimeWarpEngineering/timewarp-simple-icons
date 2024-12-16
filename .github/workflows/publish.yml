@@ -5,6 +5,12 @@ on:
     branches:
       - main # Trigger on push to the main branch
   workflow_dispatch: # Allow manual kick off
+    inputs:
+      force_publish:
+        description: 'Force publish to NuGet'
+        type: boolean
+        default: false
+        required: false
   schedule:
     - cron: '0 0 * * 0'  # Runs at midnight every Sunday (UTC time)
 
@@ -28,31 +34,31 @@ jobs:
         ./.github/scripts/compare-versions.ps1
 
     - name: Update project files
-      if: steps.get-releases.outputs.lib != steps.get-releases.outputs.si
+      if: steps.get-releases.outputs.lib != steps.get-releases.outputs.si || inputs.force_publish
       shell: pwsh
       run: |
         ./.github/scripts/update-project.ps1 -NewVersion '${{ steps.get-releases.outputs.si }}'
 
     - name: Update icons
-      if: steps.get-releases.outputs.lib != steps.get-releases.outputs.si
+      if: steps.get-releases.outputs.lib != steps.get-releases.outputs.si || inputs.force_publish
       shell: pwsh
       run: |
         ./.github/scripts/update-icons.ps1 -WorkspacePath '${{ github.workspace }}'
 
     - name: Prepare git changes
-      if: steps.get-releases.outputs.lib != steps.get-releases.outputs.si
+      if: steps.get-releases.outputs.lib != steps.get-releases.outputs.si || inputs.force_publish
       shell: pwsh
       run: |
         ./.github/scripts/git-publish.ps1 -Version '${{ steps.get-releases.outputs.si }}'
 
     - name: Push changes
-      if: steps.get-releases.outputs.lib != steps.get-releases.outputs.si
+      if: steps.get-releases.outputs.lib != steps.get-releases.outputs.si || inputs.force_publish
       shell: pwsh
       run: |
         git push "https://x-access-token:${{ secrets.REPO_ACCESS_TOKEN }}@github.com/${{ github.repository }}.git" HEAD:main
 
     - name: Set NuGet Key and Publish to NuGet
-      if: steps.get-releases.outputs.lib != steps.get-releases.outputs.si
+      if: steps.get-releases.outputs.lib != steps.get-releases.outputs.si || inputs.force_publish
       shell: pwsh
       run: |
         $env:Nuget_Key = "${{ secrets.PUBLISH_TO_NUGET_ORG }}"
