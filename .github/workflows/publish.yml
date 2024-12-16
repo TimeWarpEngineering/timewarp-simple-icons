@@ -27,39 +27,11 @@ jobs:
       with:
         dotnet-version: '8.0.x'
 
-    - name: Compare release versions
-      id: get-releases
+    - name: Process Release
       shell: pwsh
       run: |
-        ./.github/scripts/compare-versions.ps1
-
-    - name: Update project files
-      if: steps.get-releases.outputs.lib != steps.get-releases.outputs.si || inputs.force_publish
-      shell: pwsh
-      run: |
-        ./.github/scripts/update-project.ps1 -NewVersion '${{ steps.get-releases.outputs.si }}'
-
-    - name: Update icons
-      if: steps.get-releases.outputs.lib != steps.get-releases.outputs.si || inputs.force_publish
-      shell: pwsh
-      run: |
-        ./.github/scripts/update-icons.ps1 -WorkspacePath '${{ github.workspace }}'
-
-    - name: Prepare git changes
-      if: steps.get-releases.outputs.lib != steps.get-releases.outputs.si || inputs.force_publish
-      shell: pwsh
-      run: |
-        ./.github/scripts/git-publish.ps1 -Version '${{ steps.get-releases.outputs.si }}'
-
-    - name: Push changes
-      if: steps.get-releases.outputs.lib != steps.get-releases.outputs.si || inputs.force_publish
-      shell: pwsh
-      run: |
-        git push "https://x-access-token:${{ secrets.REPO_ACCESS_TOKEN }}@github.com/${{ github.repository }}.git" HEAD:main
-
-    - name: Publish to NuGet
-      if: steps.get-releases.outputs.lib != steps.get-releases.outputs.si || inputs.force_publish
-      shell: pwsh
-      run: |
-        $script:Nuget_Key = "${{ secrets.PUBLISH_TO_NUGET_ORG }}"
-        ./publish.ps1
+        ./.github/scripts/process-release.ps1 `
+          -WorkspacePath '${{ github.workspace }}' `
+          -RepoToken '${{ secrets.REPO_ACCESS_TOKEN }}' `
+          -NugetKey '${{ secrets.PUBLISH_TO_NUGET_ORG }}' `
+          -ForcePublish $${{ inputs.force_publish || false }}
