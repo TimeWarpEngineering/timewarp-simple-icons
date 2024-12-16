@@ -51,12 +51,7 @@ jobs:
       run: |
         git push "https://x-access-token:${{ secrets.REPO_ACCESS_TOKEN }}@github.com/${{ github.repository }}.git" HEAD:main
 
-    - name: Set NuGet Key
-      shell: pwsh
-      run: |
-        "Nuget_Key=${{ secrets.PUBLISH_TO_NUGET_ORG }}" >> $env:GITHUB_ENV
-
-    - name: Publish to NuGet
+    - name: Set NuGet Key and Publish to NuGet
       if: steps.get-releases.outputs.lib != steps.get-releases.outputs.si
       shell: pwsh
       run: |
