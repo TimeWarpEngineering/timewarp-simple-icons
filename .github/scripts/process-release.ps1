@@ -30,7 +30,10 @@ function Compare-Versions {
         Write-Host "Latest simple-icons version: $SimpleIconsVersion"
         Write-Host "Current library version: $LibraryVersion"
         
-        return $SimpleIconsVersion -ne $LibraryVersion
+        # Explicitly return a boolean
+        $needsUpdate = $SimpleIconsVersion -ne $LibraryVersion
+        Write-Host "Needs update: $needsUpdate"
+        return $needsUpdate
     }
     catch {
         Write-Error "Failed to compare versions: $_"
@@ -137,16 +140,28 @@ function Publish-ToNuGet {
 # Main execution
 try {
     $needsUpdate = Compare-Versions
-    if ($needsUpdate -or $ForcePublish) {
-        Write-Host "Processing release..."
+    Write-Host "Force publish: $ForcePublish"
+    Write-Host "Needs update: $needsUpdate"
+    
+    if ($needsUpdate -and $ForcePublish) {
+        Write-Host "Both update needed and force publish requested. This is unexpected."
+        exit 1
+    }
+    elseif ($needsUpdate) {
+        Write-Host "Processing release due to version difference..."
         Update-ProjectFiles -NewVersion $SimpleIconsVersion
         Update-Icons
         Push-Changes
         Publish-ToNuGet
         Write-Host "Release processing completed successfully"
     }
+    elseif ($ForcePublish) {
+        Write-Host "Force publish requested but versions match. Skipping to avoid NuGet conflict."
+        exit 0
+    }
     else {
-        Write-Host "No update needed. Current version is up to date."
+        Write-Host "No update needed and no force publish requested. Exiting."
+        exit 0
     }
 }
 catch {
