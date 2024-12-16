@@ -26,18 +26,12 @@ jobs:
       uses: actions/setup-dotnet@v4
       with:
         dotnet-version: '8.0.x'
-    
-    - name: Mask Secrets
-      run: |
-        echo "::add-mask::${{ secrets.REPO_ACCESS_TOKEN }}"
-        echo "::add-mask::${{ secrets.PUBLISH_TO_NUGET_ORG }}"
-        echo "Secrets masked successfully."
 
     - name: Process Release
       shell: pwsh
       run: |
         ./.github/scripts/process-release.ps1 `
           -WorkspacePath $env:GITHUB_WORKSPACE `
-          -RepoToken ${{ secrets.REPO_ACCESS_TOKEN }} `
+          -RepoToken ${{ secrets.GITHUB_TOKEN }} `
           -NugetKey ${{ secrets.PUBLISH_TO_NUGET_ORG }} `
           -ForcePublish ${{ inputs.force_publish || false }}
