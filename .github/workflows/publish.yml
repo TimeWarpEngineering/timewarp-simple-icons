@@ -10,93 +10,54 @@ on:
 
 jobs:
   publish:
-    runs-on: ubuntu-latest # Use a Linux runner
+    runs-on: ubuntu-latest
 
     steps:
     - name: Checkout code
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4
 
-    - name: Setup .NET 6
-      uses: actions/setup-dotnet@v1
+    - name: Setup .NET 8
+      uses: actions/setup-dotnet@v4
       with:
-        dotnet-version: '6.0.x' # Use .NET 6
-
+        dotnet-version: '8.0.x'
 
     - name: Compare release versions
       id: get-releases
-      run: |
-        simple_icons_version="$(curl --retry 5 -s https://api.github.com/repos/simple-icons/simple-icons/releases/latest | jq -r .tag_name)"
-        echo "si=$simple_icons_version" >> $GITHUB_OUTPUT
-        lib_version=$(grep '<Version>' source/timewarp-simple-icons/timewarp-simple-icons.csproj | sed 's/[^0-9.]*\([0-9.]*\).*/\1/')
-        echo "lib=$lib_version" >> $GITHUB_OUTPUT
-
-        echo "Fetching latest simple-icons version..."
-        echo "Latest simple-icons version: $simple_icons_version"
-        echo "Fetching version from csproj..."
-        echo "Version from csproj: $lib_version"
-
-    - name: Update Csproj
-      if: steps.get-releases.outputs.lib != steps.get-releases.outputs.si
-      run: |
-        echo "Fetching latest simple-icons version: $steps.get-releases.outputs.si"
-        echo "Fetching old simple-icons version: $steps.get-releases.outputs.lib"
-        sed -i "s/<Version>[^<]*<\/Version>/<Version>${{ steps.get-releases.outputs.si }}<\/Version>/" source/timewarp-simple-icons/timewarp-simple-icons.csproj
-
-    - name: Update release.md
-      if: steps.get-releases.outputs.lib != steps.get-releases.outputs.si
-      run: |
-        latest_version="${{ steps.get-releases.outputs.si }}"
-        release_notes="Update to simple-icons version $latest_version"
-        sed -i "1s/^# Releases$/# Releases\n\n## $latest_version\n\n* $release_notes\n/" releases.md
-
-    - name: Checkout simple icons repository
-      if: steps.get-releases.outputs.lib != steps.get-releases.outputs.si
-      uses: actions/checkout@v2
-      with:
-        repository: simple-icons/simple-icons
-        path: my-tools
-
-    - name: List clone files
-      if: steps.get-releases.outputs.lib != steps.get-releases.outputs.si
-      run: |
-        cd $GITHUB_WORKSPACE/my-tools  # Change directory to the cloned repository
-        ls  # List the contents of the cloned repository directory
-
-    - name: Run PowerShell script to update icons
       shell: pwsh
-      if: steps.get-releases.outputs.lib != steps.get-releases.outputs.si
       run: |
-        Push-Location tools\transform
-        try {
-          dotnet run --project transform.csproj -- "${{ github.workspace }}/my-tools/icons" "${{ github.workspace }}/source/timewarp-simple-icons/icons"
-        }
-        finally {
-          Pop-Location
-        }
+        ./.github/scripts/compare-versions.ps1
 
-    - name: Delete cloned repository
-      run: |
-        rm -rf $GITHUB_WORKSPACE/my-tools
-
-    - name: Commit and push changes
+    - name: Update project files
       if: steps.get-releases.outputs.lib != steps.get-releases.outputs.si
+      shell: pwsh
+      run: |
+        ./.github/scripts/update-project.ps1 -NewVersion '${{ steps.get-releases.outputs.si }}'
+
+    - name: Update icons
+      if: steps.get-releases.outputs.lib != steps.get-releases.outputs.si
+      shell: pwsh
+      run: |
+        ./.github/scripts/update-icons.ps1 -WorkspacePath '${{ github.workspace }}'
+
+    - name: Publish changes
+      if: steps.get-releases.outputs.lib != steps.get-releases.outputs.si
+      shell: pwsh
       env:
         REPO_ACCESS_TOKEN: ${{ secrets.REPO_ACCESS_TOKEN }}
       run: |
-        echo "Git Token: ${{ secrets.REPO_ACCESS_TOKEN }}"
-        git config --local user.email "github-actions-bot@timewarp.enterprises"
-        git config --local user.name "GitHub Actions Bot"
-        git add .
-        git commit -m "Update to simple-icons version ${{ steps.get-releases.outputs.si }}"
-        git push https://github.com/${{ github.repository }}.git HEAD:main
-
+        ./.github/scripts/git-publish.ps1 `
+          -Version '${{ steps.get-releases.outputs.si }}' `
+          -RepoToken $env:REPO_ACCESS_TOKEN `
+          -Repository '${{ github.repository }}'
 
     - name: Set NuGet Key
-      run: echo "Nuget_Key=${{ secrets.PUBLISH_TO_NUGET_ORG }}" >> $GITHUB_ENV
-
-    - name: Set NuGet Key and Publish to NuGet
-      if: steps.get-releases.outputs.lib != steps.get-releases.outputs.si
+      shell: pwsh
       run: |
-       $Nuget_Key = "${{ secrets.PUBLISH_TO_NUGET_ORG }}"
-       ./publish.ps1
-      shell: pwsh # Use PowerShell Core
+        "Nuget_Key=${{ secrets.PUBLISH_TO_NUGET_ORG }}" >> $env:GITHUB_ENV
+
+    - name: Publish to NuGet
+      if: steps.get-releases.outputs.lib != steps.get-releases.outputs.si
+      shell: pwsh
+      run: |
+        $env:Nuget_Key = "${{ secrets.PUBLISH_TO_NUGET_ORG }}"
+        ./publish.ps1
