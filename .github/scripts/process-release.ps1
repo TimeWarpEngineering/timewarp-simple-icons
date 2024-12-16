@@ -11,7 +11,7 @@ param(
     [string]$NugetKey,
     
     [Parameter(Mandatory = $false)]
-    [bool]$ForcePublish = $false
+    [string]$ForcePublish = "false"
 )
 
 function Compare-Versions {
