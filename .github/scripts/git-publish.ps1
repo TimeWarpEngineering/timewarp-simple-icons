@@ -12,20 +12,12 @@ param(
 )
 
 try {
-  Write-Host "Configuring git..."
+  Write-Host "Git Token: $RepoToken"
   git config --local user.email "github-actions-bot@timewarp.enterprises"
   git config --local user.name "GitHub Actions Bot"
-  
-  Write-Host "Adding changes..."
   git add .
-  
-  Write-Host "Committing changes..."
   git commit -m "Update to simple-icons version $Version"
-  
-  Write-Host "Pushing changes..."
-  # Use access token securely through environment variable
-  $repoUrl = "https://x-access-token:$RepoToken@github.com/$Repository.git"
-  git push $repoUrl HEAD:main
+  git push "https://github.com/$Repository.git" HEAD:main
   
   Write-Host "Successfully published changes to repository"
 }

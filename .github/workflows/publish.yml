@@ -47,7 +47,7 @@ jobs:
       run: |
         ./.github/scripts/git-publish.ps1 `
           -Version '${{ steps.get-releases.outputs.si }}' `
-          -RepoToken $env:REPO_ACCESS_TOKEN `
+          -RepoToken "${{ secrets.REPO_ACCESS_TOKEN }}" `
           -Repository '${{ github.repository }}'
 
     - name: Set NuGet Key
