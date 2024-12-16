@@ -28,10 +28,13 @@ jobs:
         dotnet-version: '8.0.x'
 
     - name: Process Release
+      env:
+        REPO_TOKEN: ${{ secrets.REPO_ACCESS_TOKEN }}
+        NUGET_KEY: ${{ secrets.PUBLISH_TO_NUGET_ORG }}
       shell: pwsh
       run: |
         ./.github/scripts/process-release.ps1 `
-          -WorkspacePath '${{ github.workspace }}' `
-          -RepoToken '${{ secrets.REPO_ACCESS_TOKEN }}' `
-          -NugetKey '${{ secrets.PUBLISH_TO_NUGET_ORG }}' `
+          -WorkspacePath $env:GITHUB_WORKSPACE `
+          -RepoToken $env:REPO_TOKEN `
+          -NugetKey $env:NUGET_KEY `
           -ForcePublish $${{ inputs.force_publish || false }}
