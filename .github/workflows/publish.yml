@@ -41,13 +41,13 @@ jobs:
 
     - name: Publish changes
       if: steps.get-releases.outputs.lib != steps.get-releases.outputs.si
-      shell: pwsh
       env:
         REPO_ACCESS_TOKEN: ${{ secrets.REPO_ACCESS_TOKEN }}
+      shell: pwsh
       run: |
         ./.github/scripts/git-publish.ps1 `
           -Version '${{ steps.get-releases.outputs.si }}' `
-          -RepoToken "${{ secrets.REPO_ACCESS_TOKEN }}" `
+          -RepoToken $env:REPO_ACCESS_TOKEN `
           -Repository '${{ github.repository }}'
 
     - name: Set NuGet Key
