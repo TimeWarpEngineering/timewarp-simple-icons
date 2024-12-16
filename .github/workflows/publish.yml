@@ -39,16 +39,17 @@ jobs:
       run: |
         ./.github/scripts/update-icons.ps1 -WorkspacePath '${{ github.workspace }}'
 
-    - name: Publish changes
+    - name: Prepare git changes
       if: steps.get-releases.outputs.lib != steps.get-releases.outputs.si
-      env:
-        REPO_ACCESS_TOKEN: ${{ secrets.REPO_ACCESS_TOKEN }}
       shell: pwsh
       run: |
-        ./.github/scripts/git-publish.ps1 `
-          -Version '${{ steps.get-releases.outputs.si }}' `
-          -RepoToken $env:REPO_ACCESS_TOKEN `
-          -Repository '${{ github.repository }}'
+        ./.github/scripts/git-publish.ps1 -Version '${{ steps.get-releases.outputs.si }}'
+
+    - name: Push changes
+      if: steps.get-releases.outputs.lib != steps.get-releases.outputs.si
+      shell: pwsh
+      run: |
+        git push "https://x-access-token:${{ secrets.REPO_ACCESS_TOKEN }}@github.com/${{ github.repository }}.git" HEAD:main
 
     - name: Set NuGet Key
       shell: pwsh
