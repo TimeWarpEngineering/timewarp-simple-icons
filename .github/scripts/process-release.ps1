@@ -143,11 +143,7 @@ try {
     Write-Host "Force publish: $ForcePublish"
     Write-Host "Needs update: $needsUpdate"
     
-    if ($needsUpdate -and $ForcePublish) {
-        Write-Host "Both update needed and force publish requested. This is unexpected."
-        exit 1
-    }
-    elseif ($needsUpdate) {
+    if ($needsUpdate) {
         Write-Host "Processing release due to version difference..."
         Update-ProjectFiles -NewVersion $SimpleIconsVersion
         Update-Icons
@@ -156,11 +152,15 @@ try {
         Write-Host "Release processing completed successfully"
     }
     elseif ($ForcePublish) {
-        Write-Host "Force publish requested but versions match. Skipping to avoid NuGet conflict."
-        exit 0
+        Write-Host "Force publish requested. Processing release..."
+        Update-ProjectFiles -NewVersion $SimpleIconsVersion
+        Update-Icons
+        Push-Changes
+        Publish-ToNuGet
+        Write-Host "Release processing completed successfully"
     }
     else {
-        Write-Host "No update needed and no force publish requested. Exiting."
+        Write-Host "No update needed. Current version is up to date."
         exit 0
     }
 }
