@@ -1,6 +1,13 @@
 Push-Location $PSScriptRoot
 try {
-    if (!$Nuget_Key) { throw "Nuget_Key is not set"}
+    # Check for PowerShell variable first, then environment variable
+    if (!$Nuget_Key) { 
+        $Nuget_Key = $env:Nuget_Key
+    }
+    if (!$Nuget_Key) { 
+        throw "Nuget_Key is not set in either variable scope"
+    }
+
     dotnet tool restore
     dotnet cleanup -y
     dotnet pack ./source/timewarp-simple-icons/timewarp-simple-icons.csproj -c Release --output packages
