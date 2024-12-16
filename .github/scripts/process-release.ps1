@@ -16,6 +16,7 @@ param(
 
 # Convert ForcePublish to boolean
 $ForcePublish = [System.Convert]::ToBoolean($ForcePublish)
+Write-Host "Force publish: $ForcePublish"
 
 function Compare-Versions {
     try {
@@ -31,9 +32,7 @@ function Compare-Versions {
         Write-Host "Current library version: $LibraryVersion"
         
         # Explicitly return a boolean
-        $needsUpdate = $SimpleIconsVersion -ne $LibraryVersion
-        Write-Host "Needs update: $needsUpdate"
-        return $needsUpdate
+        return $SimpleIconsVersion -ne $LibraryVersion
     }
     catch {
         Write-Error "Failed to compare versions: $_"
@@ -140,11 +139,10 @@ function Publish-ToNuGet {
 # Main execution
 try {
     $needsUpdate = Compare-Versions
-    Write-Host "Force publish: $ForcePublish"
     Write-Host "Needs update: $needsUpdate"
     
     if ($needsUpdate) {
-        Write-Host "Processing release due to version difference..."
+        Write-Host "New version detected. Processing release..."
         Update-ProjectFiles -NewVersion $SimpleIconsVersion
         Update-Icons
         Push-Changes
