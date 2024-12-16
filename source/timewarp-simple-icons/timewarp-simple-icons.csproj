@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
+<Project Sdk="Microsoft.NET.Sdk.Razor">
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
     <IsTrimmable>true</IsTrimmable>
@@ -16,7 +16,7 @@
     <PackageTags>timewarp; blazor; icons; tailwind; simple icons; simpleicons</PackageTags>
     <PackageLicenseExpression>CC0-1.0</PackageLicenseExpression>
     <PackageIcon>Logo.png</PackageIcon>
-    <Version>13.20.0</Version>
+    <Version>13.21.0</Version>
   </PropertyGroup>
   <ItemGroup>
     <None Include="..\..\assets\Logo.png">
