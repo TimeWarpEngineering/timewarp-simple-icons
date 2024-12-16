@@ -12,7 +12,7 @@ try {
     dotnet cleanup -y
     dotnet pack ./source/timewarp-simple-icons/timewarp-simple-icons.csproj -c Release --output packages
     Push-Location ./packages
-    dotnet nuget push **/*.nupkg --source https://api.nuget.org/v3/index.json --api-key $Nuget_Key
+    dotnet nuget push **/*.nupkg --source https://api.nuget.org/v3/index.json --api-key $Nuget_Key --skip-duplicate
     Pop-Location
 }
 finally {
