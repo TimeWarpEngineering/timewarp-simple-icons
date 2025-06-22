@@ -1,5 +1,10 @@
 # Releases
 
+## 15.2.0
+
+* Update to simple-icons version 15.2.0
+
+
 ## 15.1.0
 
 * Update to simple-icons version 15.1.0
