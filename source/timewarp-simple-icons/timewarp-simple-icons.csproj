@@ -16,7 +16,7 @@
     <PackageTags>timewarp; blazor; icons; tailwind; simple icons; simpleicons</PackageTags>
     <PackageLicenseExpression>CC0-1.0</PackageLicenseExpression>
     <PackageIcon>Logo.png</PackageIcon>
-    <Version>15.4.0</Version>
+    <Version>15.5.0</Version>
   </PropertyGroup>
   <ItemGroup>
     <None Include="..\..\assets\Logo.png">
