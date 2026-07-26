@@ -1,0 +1,109 @@
+name: CI/CD
+
+# Thin trigger. The CI/CD pipeline lives in C# — the `dev workflow` command — and is mode-aware:
+# push/PR run clean->build->test; a published release runs clean->build->pack->push (no test gate).
+# A weekly schedule syncs icons from upstream simple-icons/simple-icons via `dev update-icons`.
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'source/**'
+      - 'tests/**'
+      - 'tools/**'
+      - '.github/workflows/**'
+      - 'Directory.Build.props'
+      - 'Directory.Packages.props'
+      - 'releases.md'
+  pull_request:
+    branches: [ main ]
+    paths:
+      - 'source/**'
+      - 'tests/**'
+      - 'tools/**'
+      - '.github/workflows/**'
+      - 'Directory.Build.props'
+      - 'Directory.Packages.props'
+      - 'releases.md'
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      sync_icons:
+        description: 'Sync icons from upstream simple-icons and publish if updated'
+        type: boolean
+        default: false
+  schedule:
+    - cron: '0 6 * * 0'
+
+jobs:
+  sync-icons:
+    if: github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && inputs.sync_icons)
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      id-token: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: NuGet login (OIDC Trusted Publishing)
+        id: nuget-login
+        uses: nuget/login@v1
+        with:
+          user: TimeWarp.Enterprises
+
+      - name: Sync simple-icons
+        run: |
+          dotnet run tools/dev-cli/dev.cs -- update-icons --push --publish --api-key "${{ steps.nuget-login.outputs.NUGET_API_KEY }}"
+
+  ci:
+    if: github.event_name != 'schedule' && !(github.event_name == 'workflow_dispatch' && inputs.sync_icons)
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: NuGet login (OIDC Trusted Publishing)
+        if: github.event_name == 'release'
+        id: nuget-login
+        uses: nuget/login@v1
+        with:
+          user: TimeWarp.Enterprises
+
+      - name: Run CI Pipeline
+        run: |
+          if [ "${{ github.event_name }}" == "release" ]; then
+            dotnet run tools/dev-cli/dev.cs -- workflow --api-key "${{ steps.nuget-login.outputs.NUGET_API_KEY }}"
+          elif [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
+            dotnet run tools/dev-cli/dev.cs -- workflow --mode merge
+          else
+            dotnet run tools/dev-cli/dev.cs -- workflow
+          fi
+
+      - name: Upload Artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: Packages-${{ github.run_number }}
+          path: artifacts/packages/*.nupkg
+          if-no-files-found: ignore

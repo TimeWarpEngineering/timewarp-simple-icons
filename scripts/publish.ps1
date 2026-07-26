@@ -1,10 +1,10 @@
-Push-Location $PSScriptRoot
+Push-Location "$PSScriptRoot/.."
 try {
     # Check for PowerShell variable first, then environment variable
-    if (!$Nuget_Key) { 
+    if (!$Nuget_Key) {
         $Nuget_Key = $env:Nuget_Key
     }
-    if (!$Nuget_Key) { 
+    if (!$Nuget_Key) {
         throw "Nuget_Key is not set in either variable scope"
     }
 
