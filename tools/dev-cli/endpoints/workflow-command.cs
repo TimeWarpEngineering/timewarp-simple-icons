@@ -4,7 +4,10 @@
 #region Design
 // PR/merge: clean -> build -> test
 // Release: clean -> build -> pack -> push (no test gate)
-// Auto-detects mode from GITHUB_EVENT_NAME or --mode
+// Sync (schedule / SYNC_ICONS): update-icons --push --publish via same CLI entrypoint
+// Auto-detects mode from GITHUB_EVENT_NAME / SYNC_ICONS or --mode
+// All NuGet publish paths must go through this command so Trusted Publishing
+// (bound to .github/workflows/workflow.yml) remains the single trusted identity.
 #endregion
 
 namespace DevCli.Commands;
@@ -12,7 +15,7 @@ namespace DevCli.Commands;
 [NuruRoute("workflow", Description = "Run full CI/CD pipeline")]
 internal sealed class WorkflowCommand : ICommand<Unit>
 {
-  [Option("mode", "m", Description = "CI mode: pr, merge, or release (auto-detected from GITHUB_EVENT_NAME if not specified)")]
+  [Option("mode", "m", Description = "CI mode: pr, merge, release, or sync (auto-detected from GITHUB_EVENT_NAME if not specified)")]
   public string? Mode { get; set; }
 
   [Option("api-key", Description = "NuGet API key for publishing (from OIDC Trusted Publishing)")]
@@ -48,13 +51,17 @@ internal sealed class WorkflowCommand : ICommand<Unit>
       Terminal.WriteLine("===============================================================================");
       Terminal.WriteLine("");
 
-      if (mode == CiMode.Release)
+      switch (mode)
       {
-        await RunReleaseWorkflowAsync(command.ApiKey, ct);
-      }
-      else
-      {
-        await RunPrWorkflowAsync(ct);
+        case CiMode.Release:
+          await RunReleaseWorkflowAsync(command.ApiKey, ct);
+          break;
+        case CiMode.Sync:
+          await RunSyncIconsWorkflowAsync(command.ApiKey, ct);
+          break;
+        default:
+          await RunPrWorkflowAsync(ct);
+          break;
       }
 
       return Value;
@@ -69,23 +76,53 @@ internal sealed class WorkflowCommand : ICommand<Unit>
           "pr" => CiMode.Pr,
           "merge" => CiMode.Merge,
           "release" => CiMode.Release,
+          "sync" => CiMode.Sync,
           _ => CiMode.Pr
         };
       }
 
       string? eventName = Environment.GetEnvironmentVariable("GITHUB_EVENT_NAME");
+      if (IsSyncRequested(eventName))
+      {
+        Terminal.WriteLine($"Detected GITHUB_EVENT_NAME: {eventName ?? "(not set)"} + sync request -> Mode: {CiMode.Sync}");
+        return CiMode.Sync;
+      }
+
       CiMode mode = eventName switch
       {
         "pull_request" => CiMode.Pr,
         "push" => CiMode.Merge,
         "release" => CiMode.Release,
-        "workflow_dispatch" => CiMode.Release,
+        "workflow_dispatch" => CiMode.Merge,
         _ => CiMode.Pr
       };
 
       Terminal.WriteLine($"Detected GITHUB_EVENT_NAME: {eventName ?? "(not set)"} -> Mode: {mode}");
       return mode;
     }
+
+    private static bool IsSyncRequested(string? eventName)
+    {
+      if (string.Equals(eventName, "schedule", StringComparison.OrdinalIgnoreCase))
+      {
+        return true;
+      }
+
+      // Set by workflow.yml for schedule and workflow_dispatch with sync_icons=true
+      string? syncIcons = Environment.GetEnvironmentVariable("SYNC_ICONS");
+      if (IsTruthy(syncIcons))
+      {
+        return true;
+      }
+
+      // GitHub also exposes workflow_dispatch inputs as INPUT_<NAME>
+      string? inputSync = Environment.GetEnvironmentVariable("INPUT_SYNC_ICONS");
+      return IsTruthy(inputSync);
+    }
+
+    private static bool IsTruthy(string? value) =>
+      string.Equals(value, "true", StringComparison.OrdinalIgnoreCase)
+      || string.Equals(value, "1", StringComparison.Ordinal);
 
     private async Task RunPrWorkflowAsync(CancellationToken ct)
     {
@@ -112,6 +149,40 @@ internal sealed class WorkflowCommand : ICommand<Unit>
 
       Terminal.WriteLine("");
       Terminal.WriteLine("Pipeline SUCCEEDED - package published to NuGet.org".Green());
+    }
+
+    private async Task RunSyncIconsWorkflowAsync(string? apiKey, CancellationToken ct)
+    {
+      Terminal.WriteLine("Pipeline: update-icons --push --publish (via workflow for Trusted Publishing)");
+      Terminal.WriteLine("");
+
+      // Re-enter the same CLI so Trusted Publishing stays on the workflow.yml identity
+      // while icon sync logic remains owned by the update-icons command.
+      List<string> args =
+      [
+        "run",
+        Path.Combine(RepoRoot, "tools", "dev-cli", "dev.cs"),
+        "--",
+        "update-icons",
+        "--push",
+        "--publish"
+      ];
+
+      if (!string.IsNullOrEmpty(apiKey))
+      {
+        args.Add("--api-key");
+        args.Add(apiKey);
+      }
+
+      int exitCode = await Shell.Builder("dotnet")
+        .WithArguments([.. args])
+        .WithWorkingDirectory(RepoRoot)
+        .RunAsync(ct);
+
+      if (!ReportFailure(exitCode, "update-icons")) return;
+
+      Terminal.WriteLine("");
+      Terminal.WriteLine("Pipeline SUCCEEDED - icon sync complete".Green());
     }
 
     private async Task<bool> CleanAsync(CancellationToken ct)
@@ -210,5 +281,6 @@ internal enum CiMode
 {
   Pr,
   Merge,
-  Release
+  Release,
+  Sync
 }

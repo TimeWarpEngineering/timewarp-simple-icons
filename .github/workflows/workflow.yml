@@ -1,8 +1,16 @@
 name: CI/CD
 
-# Thin trigger. The CI/CD pipeline lives in C# — the `dev workflow` command — and is mode-aware:
-# push/PR run clean->build->test; a published release runs clean->build->pack->push (no test gate).
-# A weekly schedule syncs icons from upstream simple-icons/simple-icons via `dev update-icons`.
+# Thin trigger. All behavior lives in `dev workflow`, which is mode-aware from
+# GITHUB_EVENT_NAME (and SYNC_ICONS for manual dispatch).
+#
+# Trusted Publishing on nuget.org is bound to this workflow file — do not add a
+# second job that publishes outside `dev workflow`; schedule/sync must still go
+# through the workflow endpoint so the OIDC identity matches the trusted path.
+#
+# Modes:
+#   push/PR            -> clean -> build -> test
+#   release            -> clean -> build -> pack -> push
+#   schedule / sync    -> update-icons --push --publish
 
 on:
   push:
@@ -37,10 +45,10 @@ on:
     - cron: '0 6 * * 0'
 
 jobs:
-  sync-icons:
-    if: github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && inputs.sync_icons)
+  ci:
     runs-on: ubuntu-latest
     permissions:
+      # write needed when workflow mode is Sync (commit/push icon updates)
       contents: write
       id-token: write
 
@@ -56,46 +64,23 @@ jobs:
           dotnet-version: '10.0.x'
 
       - name: NuGet login (OIDC Trusted Publishing)
-        id: nuget-login
-        uses: nuget/login@v1
-        with:
-          user: TimeWarp.Enterprises
-
-      - name: Sync simple-icons
-        run: |
-          dotnet run tools/dev-cli/dev.cs -- update-icons --push --publish --api-key "${{ steps.nuget-login.outputs.NUGET_API_KEY }}"
-
-  ci:
-    if: github.event_name != 'schedule' && !(github.event_name == 'workflow_dispatch' && inputs.sync_icons)
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      id-token: write
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: '10.0.x'
-
-      - name: NuGet login (OIDC Trusted Publishing)
-        if: github.event_name == 'release'
+        if: >-
+          github.event_name == 'release' ||
+          github.event_name == 'schedule' ||
+          (github.event_name == 'workflow_dispatch' && inputs.sync_icons)
         id: nuget-login
         uses: nuget/login@v1
         with:
           user: TimeWarp.Enterprises
 
       - name: Run CI Pipeline
+        env:
+          # workflow command reads this for workflow_dispatch + sync path
+          SYNC_ICONS: ${{ github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && inputs.sync_icons) }}
         run: |
-          if [ "${{ github.event_name }}" == "release" ]; then
-            dotnet run tools/dev-cli/dev.cs -- workflow --api-key "${{ steps.nuget-login.outputs.NUGET_API_KEY }}"
-          elif [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
-            dotnet run tools/dev-cli/dev.cs -- workflow --mode merge
+          API_KEY="${{ steps.nuget-login.outputs.NUGET_API_KEY }}"
+          if [ -n "$API_KEY" ]; then
+            dotnet run tools/dev-cli/dev.cs -- workflow --api-key "$API_KEY"
           else
             dotnet run tools/dev-cli/dev.cs -- workflow
           fi
