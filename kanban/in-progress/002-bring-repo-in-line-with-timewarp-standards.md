@@ -47,10 +47,62 @@ This is scaffolding/compliance work first (MSBuild, CPM, dev CLI, CI workflow, V
 ## Notes
 
 - **Gold standard peer:** `/home/steve/worktrees/github.com/TimeWarpEngineering/timewarp-heroicons/main` — `ganda repo audit` → 21 pass / 0 fail.
-- **Already done in this worktree:** kebab-case `kanban/` columns; legacy done task renamed to `001-convert-publish-workflow-to-powershell.md`.
-- **Known baseline failures (2026-07-26):** banned-api/symbols, bin-dev, Directory.Packages.props, directory-structure (documentation/skills/archived), envrc, memsearch, msbuild repository.props, nuru, region-annotations, slnx, source Directory.Build.props, vscode-window-icon, workflow-file.
-- `ganda repo audit --fix` may scaffold many files; review diffs carefully (especially workflow vs existing `publish` scripts, and CPM package versions for this library).
-- After fix, diff against heroicons for any non-fixable drift (scripts, global.json, assets naming).
+- **Already done:** kebab-case `kanban/` columns; done task `001-convert-publish-workflow-to-powershell.md`.
+
+### Implementation plan (2026-07-26)
+
+**Defaults (locked):** net10.0; keep package version `16.27.1`; keep license `CC0-1.0` and authors; branch `main`; keep `.sln` + make `.slnx` authoritative; move root `*.ps1` → `scripts/` (don’t delete); replace secret NuGet publish with OIDC/`dev workflow` + retire `publish.yml` once covered.
+
+**Critical pre-existing bugs (Linux):** `tests/sample-app` ProjectReference uses capital `Source/`; `transform.ps1` same — fix to `source/`.
+
+#### Phase A — Bootstrap
+1. `ganda repo audit` → baseline
+2. `ganda repo audit --fix` first structural step
+3. Re-audit; **immediately** rewrite scaffolded `source/Directory.Build.props` (template uses wrong version/license/authors)
+4. Do not commit `.memsearch/memory/*` or bin/obj
+
+#### Phase B — MSBuild / CPM / TFM
+1. Align root `Directory.Build.props`, `msbuild/repository.props`, `BannedSymbols.txt` with heroicons
+2. Rewrite `source/Directory.Build.props`: Version `16.27.1`, CC0-1.0, PackageIcon `logo.png`, README pack, package URLs/tags
+3. Ensure `assets/logo.png` (lowercase); keep `Logo.png` for README if desired
+4. Slim package csproj → net10.0, CPM PackageReferences without Version
+5. Sample-app + transform → net10.0, CPM, fix `source/` path
+6. `Directory.Packages.props` pins from heroicons (+ AspNetCore 10.x, Scriban, Nuru/Amuru/Build.Tasks)
+7. Optional `global.json` like heroicons
+8. Verify: `dotnet restore` + build package/sample/transform
+
+#### Phase C — Solution
+1. Populate empty `.slnx` with package, sample-app, transform (folder groups like heroicons)
+2. `dotnet build timewarp-simple-icons.slnx -c Release`
+
+#### Phase D — Dev CLI
+1. Keep scaffold; port heroicons endpoints: build/test/workflow against `.slnx`
+2. Description: `Development CLI for timewarp-simple-icons`
+3. Capabilities must include: build, check-version, clean, self-install, test, verify-samples, workflow
+4. Replace stub `workflow` with mode-aware PR/merge/release (pack `timewarp-simple-icons`)
+5. Optional: `update-icons` port from process-release.ps1 (needed before deleting scheduled publish)
+6. `#region Purpose` on all tools/dev-cli .cs; `dotnet run tools/dev-cli/dev.cs -- self-install`; `./bin/dev --capabilities`
+
+#### Phase E — CI
+1. Align `.github/workflows/workflow.yml` with heroicons (main branch, net10, OIDC nuget login)
+2. Optional sync-icons job/schedule once `update-icons` exists
+3. Delete `publish.yml` + move PS1 scripts under `scripts/` with fixed paths
+4. Confirm Trusted Publishing for package id on nuget.org (note if not verifiable locally)
+
+#### Phase F — Scaffold leftovers
+Confirm documentation/, skills/, kanban/archived/, memsearch, .githooks + core.hooksPath, vscode window-icon assets
+
+#### Phase G — Verify + commit
+- `ganda repo audit` → Failed: 0
+- `./bin/dev --capabilities`, build slnx, pack nupkg with logo+readme
+- Conventional commits; no secrets/bin dumps
+
+**Risks:** dual workflows; scaffold version overwrite; empty slnx; CPM NU1008; Source vs source; stub workflow; Trusted Publishing.
+
+### Session
+
+- Orchestrator: grok (2026-07-26) — phases 1–2; plan locked
+- Plan agent: 019f9eaa-0dfe-7553-bf09-9787e8bbd237
 
 ## Results
 
