@@ -4,8 +4,6 @@ using Scriban;
 string simpleIconPath = args[0];
 string outputPath = args[1];
 
-Console.WriteLine($"input:{simpleIconPath} output:{outputPath}");
-
 if (!Directory.Exists(simpleIconPath)) throw new Exception($"{simpleIconPath} does not exist");
 var fullFileNames = Directory.EnumerateFiles(simpleIconPath);
 
