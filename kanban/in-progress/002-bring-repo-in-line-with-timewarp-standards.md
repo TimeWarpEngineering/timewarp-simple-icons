@@ -21,28 +21,28 @@ This is scaffolding/compliance work first (MSBuild, CPM, dev CLI, CI workflow, V
 
 ### Bootstrap (auto-fix)
 
-- [ ] Run `ganda repo audit` and capture baseline (currently ~15 failures)
-- [ ] Run `ganda repo audit --fix` as the first structural step
-- [ ] Re-run `ganda repo audit` and list remaining failures
+- [x] Run `ganda repo audit` and capture baseline (currently ~15 failures)
+- [x] Run `ganda repo audit --fix` as the first structural step
+- [x] Re-run `ganda repo audit` and list remaining failures
 
 ### Align remaining failures (reference: timewarp-heroicons)
 
-- [ ] MSBuild / CPM: root + `source/` Directory.Build.props, `Directory.Packages.props`, `BannedSymbols.txt`, `msbuild/repository.props`
-- [ ] Dev CLI: `bin/dev`, `tools/dev-cli` with TimeWarp.Nuru, region annotations, `--capabilities`
-- [ ] Solution: add/update `.slnx` (keep or retire legacy `.sln` per peer pattern)
-- [ ] Env: `.envrc` with `PATH_add bin`
-- [ ] Dirs: `documentation/`, `skills/`, `kanban/archived/`
-- [ ] CI: `.github/workflows/workflow.yml` (and reconcile with any existing publish workflow)
-- [ ] Memsearch: `.memsearch.toml`, `.githooks/post-commit` + `post-merge`, `core.hooksPath=.githooks`
-- [ ] VS Code window-icon: avatar SVG, `.vscode/tasks.json`, `window.title`, `timewarp.blurImagePath`
-- [ ] NuGet package metadata / icon wiring if audit surfaces it after scaffold
+- [x] MSBuild / CPM: root + `source/` Directory.Build.props, `Directory.Packages.props`, `BannedSymbols.txt`, `msbuild/repository.props`
+- [x] Dev CLI: `bin/dev`, `tools/dev-cli` with TimeWarp.Nuru, region annotations, `--capabilities`
+- [x] Solution: add/update `.slnx` (keep or retire legacy `.sln` per peer pattern)
+- [x] Env: `.envrc` with `PATH_add bin`
+- [x] Dirs: `documentation/`, `skills/`, `kanban/archived/`
+- [x] CI: `.github/workflows/workflow.yml` (and reconcile with any existing publish workflow)
+- [x] Memsearch: `.memsearch.toml`, `.githooks/post-commit` + `post-merge`, `core.hooksPath=.githooks`
+- [x] VS Code window-icon: avatar SVG, `.vscode/tasks.json`, `window.title`, `timewarp.blurImagePath`
+- [x] NuGet package metadata / icon wiring if audit surfaces it after scaffold
 
 ### Verify
 
-- [ ] `ganda repo audit` clean
-- [ ] `bin/dev --capabilities` works (or peer-equivalent)
-- [ ] Solution builds; sample app / tests still run
-- [ ] Commit compliance work in conventional commits
+- [x] `ganda repo audit` clean
+- [x] `bin/dev --capabilities` works (or peer-equivalent)
+- [x] Solution builds; sample app / tests still run
+- [x] Commit compliance work in conventional commits
 
 ## Notes
 
