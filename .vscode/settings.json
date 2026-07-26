@@ -1,5 +1,7 @@
 {
-    "cSpell.words": [
-        "Blazor"
-    ]
+  "cSpell.words": [
+    "Blazor"
+  ],
+  "window.title": "timewarp-simple-icons · ${rootName}${separator}${activeEditorShort}",
+  "timewarp.blurImagePath": "assets/timewarp-simple-icons-avatar.svg"
 }
