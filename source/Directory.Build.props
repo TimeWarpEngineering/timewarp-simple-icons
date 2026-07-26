@@ -1,0 +1,27 @@
+<Project>
+  <Import Project="$([MSBuild]::GetPathOfFileAbove('Directory.Build.props', '$(MSBuildThisFileDirectory)../'))" />
+
+  <PropertyGroup Label="Packaging">
+    <IsPackable>true</IsPackable>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+  </PropertyGroup>
+
+  <PropertyGroup Label="Package Metadata">
+    <Version>16.27.1</Version>
+    <Authors>Steven T. Cramer</Authors>
+    <Company>TimeWarp Enterprises</Company>
+    <Description>All of the simple-icons wrapped as Blazor components.</Description>
+    <PackageProjectUrl>https://github.com/TimeWarpEngineering/timewarp-simple-icons</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/TimeWarpEngineering/timewarp-simple-icons.git</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageTags>timewarp; blazor; icons; simple-icons; simpleicons</PackageTags>
+    <PackageLicenseExpression>CC0-1.0</PackageLicenseExpression>
+    <PackageIcon>logo.png</PackageIcon>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+  </PropertyGroup>
+
+  <ItemGroup Label="Package Content">
+    <None Include="$(RepositoryRoot)assets/logo.png" Pack="true" PackagePath="\" />
+    <None Include="$(RepositoryRoot)README.md" Pack="true" PackagePath="\" />
+  </ItemGroup>
+</Project>

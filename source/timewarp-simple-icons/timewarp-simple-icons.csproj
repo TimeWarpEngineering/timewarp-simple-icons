@@ -1,41 +1,19 @@
 <Project Sdk="Microsoft.NET.Sdk.Razor">
+
   <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
-    <IsTrimmable>true</IsTrimmable>
+    <TargetFramework>net10.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <RootNamespace>TimeWarp.Simple.Icons</RootNamespace>
-    <Authors>Steven T. Cramer</Authors>
-    <Company>TimeWarp Enterprises</Company>
     <Product>timewarp-simple-icons</Product>
-    <Description>All of the simple-icons wrapped as Blazor components.</Description>
-    <PackageProjectUrl>https://github.com/TimeWarpEngineering/timewarp-simple-icons</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/TimeWarpEngineering/timewarp-simple-icons.git</RepositoryUrl>
-    <PackageReadmeFile>README.md</PackageReadmeFile>
-    <RepositoryType>git</RepositoryType>
-    <PackageTags>timewarp; blazor; icons; tailwind; simple icons; simpleicons</PackageTags>
-    <PackageLicenseExpression>CC0-1.0</PackageLicenseExpression>
-    <PackageIcon>Logo.png</PackageIcon>
-    <Version>16.27.1</Version>
   </PropertyGroup>
-  <ItemGroup>
-    <None Include="..\..\assets\Logo.png">
-      <Pack>True</Pack>
-      <PackagePath>\</PackagePath>
-    </None>
-    <None Include="..\..\README.md">
-      <Pack>True</Pack>
-      <PackagePath>\</PackagePath>
-    </None>
-  </ItemGroup>
+
   <ItemGroup>
     <SupportedPlatform Include="browser" />
   </ItemGroup>
+
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="8.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.Web" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="icons\" />
-    <Folder Include="wwwroot\" />
-  </ItemGroup>
+
 </Project>

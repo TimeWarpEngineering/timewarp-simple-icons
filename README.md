@@ -13,7 +13,7 @@
 
 # timewarp-simple-icons
 
-![TimeWarp Logo](assets/Logo.png)
+![TimeWarp Logo](assets/logo.png)
 
 All [simple-icons](https://github.com/simple-icons/simple-icons) wrapped as Blazor components.
 See and search all at https://simpleicons.org/

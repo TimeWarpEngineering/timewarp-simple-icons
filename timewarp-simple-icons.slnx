@@ -1,0 +1,11 @@
+<Solution>
+  <Folder Name="/source/">
+    <Project Path="source/timewarp-simple-icons/timewarp-simple-icons.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/sample-app/sample-app.csproj" />
+  </Folder>
+  <Folder Name="/tools/">
+    <Project Path="tools/transform/transform.csproj" />
+  </Folder>
+</Solution>
