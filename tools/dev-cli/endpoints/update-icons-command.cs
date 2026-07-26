@@ -5,6 +5,8 @@
 // Compares the package version in source/Directory.Build.props with the latest GitHub
 // release, regenerates components when stale, optionally commits/pushes and publishes to NuGet
 // Package version tracks upstream simple-icons tag (e.g. 16.27.1)
+// If icons already match upstream but --publish is set, still pack/push when that version
+// is missing from nuget.org (repo ahead of feed after failed publishes)
 #endregion
 
 namespace DevCli.Commands;
@@ -12,10 +14,12 @@ namespace DevCli.Commands;
 [NuruRoute("update-icons", Description = "Sync icon components from upstream simple-icons releases")]
 internal sealed class UpdateIconsCommand : ICommand<Unit>
 {
+  private const string PackageId = "timewarp-simple-icons";
+
   [Option("push", Description = "Commit and push when icons were updated")]
   public bool Push { get; set; }
 
-  [Option("publish", Description = "Pack and push to NuGet after updating (requires --api-key)")]
+  [Option("publish", Description = "Pack and push to NuGet after updating (requires --api-key). Also publishes when icons are current but the version is missing from nuget.org.")]
   public bool Publish { get; set; }
 
   [Option("api-key", Description = "NuGet API key from OIDC Trusted Publishing")]
@@ -48,9 +52,27 @@ internal sealed class UpdateIconsCommand : ICommand<Unit>
       Terminal.WriteLine($"Current package version:   {currentVersion}");
       Terminal.WriteLine($"Latest simple-icons release: {latestUpstream}");
 
-      if (string.Equals(currentVersion, latestUpstream, StringComparison.Ordinal))
+      bool iconsCurrent = string.Equals(currentVersion, latestUpstream, StringComparison.Ordinal);
+
+      if (iconsCurrent)
       {
-        Terminal.WriteLine("Icons are already up to date.".Green());
+        Terminal.WriteLine("Icons are already up to date with upstream.".Green());
+
+        if (!command.Publish)
+        {
+          return Value;
+        }
+
+        // Repo matches upstream, but NuGet may still be missing this version.
+        if (await IsPublishedOnNuGetAsync(currentVersion, ct))
+        {
+          Terminal.WriteLine($"NuGet already has {PackageId} {currentVersion} — nothing to publish.".Green());
+          return Value;
+        }
+
+        Terminal.WriteLine($"NuGet is missing {PackageId} {currentVersion} — packing and publishing.");
+        if (!await BuildAsync(repoRoot, ct)) return Value;
+        if (!await PackAndPushAsync(repoRoot, currentVersion, command.ApiKey, ct)) return Value;
         return Value;
       }
 
@@ -117,6 +139,46 @@ internal sealed class UpdateIconsCommand : ICommand<Unit>
         ?? throw new InvalidOperationException("simple-icons latest release is missing tag_name");
 
       return tag.StartsWith('v') ? tag[1..] : tag;
+    }
+
+    private async Task<bool> IsPublishedOnNuGetAsync(string version, CancellationToken ct)
+    {
+      // Flat container index is the authoritative version list for nuget.org.
+      string url = $"https://api.nuget.org/v3-flatcontainer/{PackageId.ToLowerInvariant()}/index.json";
+      try
+      {
+        using HttpClient client = new();
+        client.DefaultRequestHeaders.UserAgent.ParseAdd("timewarp-simple-icons-dev-cli");
+        using HttpResponseMessage response = await client.GetAsync(url, ct);
+        if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
+        {
+          return false;
+        }
+
+        response.EnsureSuccessStatusCode();
+        await using Stream stream = await response.Content.ReadAsStreamAsync(ct);
+        using JsonDocument document = await JsonDocument.ParseAsync(stream, cancellationToken: ct);
+        if (!document.RootElement.TryGetProperty("versions", out JsonElement versions))
+        {
+          return false;
+        }
+
+        foreach (JsonElement entry in versions.EnumerateArray())
+        {
+          if (string.Equals(entry.GetString(), version, StringComparison.OrdinalIgnoreCase))
+          {
+            return true;
+          }
+        }
+
+        return false;
+      }
+      catch (Exception ex)
+      {
+        Terminal.WriteErrorLine($"Failed to query nuget.org for {PackageId}: {ex.Message}".Red());
+        // Fail closed: do not skip publish when we cannot confirm the feed state.
+        return false;
+      }
     }
 
     private async Task<bool> CloneSimpleIconsAsync(string version, string cloneDir, CancellationToken ct)
