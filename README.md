@@ -1,4 +1,4 @@
-[![Dotnet](https://img.shields.io/badge/dotnet-6.0-blue)](https://dotnet.microsoft.com)
+[![Dotnet](https://img.shields.io/badge/dotnet-10.0-blue)](https://dotnet.microsoft.com)
 [![Stars](https://img.shields.io/github/stars/TimeWarpEngineering/timewarp-simple-icons?logo=github)](https://github.com/TimeWarpEngineering/timewarp-simple-icons)
 [![Discord](https://img.shields.io/discord/715274085940199487?logo=discord)](https://discord.gg/7F4bS2T)
 [![nuget](https://img.shields.io/nuget/v/timewarp-simple-icons?logo=nuget)](https://www.nuget.org/packages/timewarp-simple-icons/)
@@ -55,19 +55,14 @@ Time is of the essence.  Before developing a Pull Request I recommend opening a 
 Please feel free to make suggestions and help out with the [documentation](https://timewarpengineering.github.io/timewarp-simple-icons/).
 Please refer to [Markdown](http://daringfireball.net/projects/markdown/) for how to write markdown files.
 
-### Steps to publish NuGet package
+### Publishing and icon updates
 
-* [ ] Clone the [simple-icons](https://github.com/simple-icons/simple-icons) repo.
-* [ ] Set the PowerShell variable `$simple_icons` to the path where you cloned the simple-icons repo in the above step. (Add `$simple_icons = "<PATH where you stored the repp>"` to your profile)
-* [ ] Ensure your copy of the simple-icons repo is up to date by running (`update.ps1`).
-* [ ] Set the Version in `timewarp-simple-icons/source/timewarp-simple-icons/timewarp-simple-icons.csproj` to the same version that is in `simple-icons/package.json`.
-* [ ] Transform the cloned [simple-icons](https://github.com/simple-icons/simple-icons) into razor files by running `transform.ps1`.
-* [ ] Run the test app to make sure the icons render properly.
-* [ ] Update `releases.md`.
-* [ ] Commit and push the changes to GitHub.
-* [ ] Set the PowerShell variable `$Nuget_Key` value.
-* [ ] Publish to NuGet by running `publish.ps1`.
-* [ ] Tweet to let people know.
+Publishing is handled by GitHub Actions (`.github/workflows/workflow.yml`) with NuGet Trusted Publishing (OIDC). Prefer the `bin/dev` CLI over ad-hoc scripts:
+
+* **CI / release pack & push:** `bin/dev workflow` (or push a release / let the workflow run)
+* **Sync icons from upstream simple-icons:** `bin/dev update-icons` (optional `--publish` with an API key from OIDC Trusted Publishing)
+
+Helper PowerShell scripts live under `scripts/` (`update.ps1`, `transform.ps1`, `publish.ps1`, `watch-sample.ps1`) if you need local one-offs. Version is set in `source/Directory.Build.props`. After regenerating icons, run the sample app, update `releases.md`, then commit and push.
 
 ## Contact
 
@@ -84,7 +79,7 @@ https://github.com/simple-icons/simple-icons
 ```PowerShell
 dotnet new sln
 dotnet new razorclasslib -n timewarp-simple-icons
-dotnet sln add .\Source\timewarp-simple-icons\timewarp-simple-icons.csproj
+dotnet sln add .\source\timewarp-simple-icons\timewarp-simple-icons.csproj
 dotnet new tool-manifest
 dotnet tool install dotnet-cleanup
 dotnet cleanup -y

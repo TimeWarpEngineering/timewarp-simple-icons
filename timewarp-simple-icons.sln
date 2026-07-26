@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.2.32630.192
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Source", "Source", "{307D8631-8FBE-41B9-B5AC-9245F15AFFA3}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "source", "source", "{307D8631-8FBE-41B9-B5AC-9245F15AFFA3}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "timewarp-simple-icons", "Source\timewarp-simple-icons\timewarp-simple-icons.csproj", "{944BF107-FB19-4971-9338-C6E264B552D6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "timewarp-simple-icons", "source\timewarp-simple-icons\timewarp-simple-icons.csproj", "{944BF107-FB19-4971-9338-C6E264B552D6}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tools", "Tools", "{9516AE57-FD52-4968-9560-83D53658CFA9}"
 EndProject
@@ -17,11 +17,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "sample-app", "tests\sample-
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Scripts", "Scripts", "{A5F4662F-71B2-4863-B2B4-B511D1B5D0FA}"
 	ProjectSection(SolutionItems) = preProject
-		publish.ps1 = publish.ps1
-		transform.ps1 = transform.ps1
-		update-transform-publish.ps1 = update-transform-publish.ps1
-		update.ps1 = update.ps1
-		watch-sample.ps1 = watch-sample.ps1
+		scripts\cline.ps1 = scripts\cline.ps1
+		scripts\publish.ps1 = scripts\publish.ps1
+		scripts\transform.ps1 = scripts\transform.ps1
+		scripts\update.ps1 = scripts\update.ps1
+		scripts\watch-sample.ps1 = scripts\watch-sample.ps1
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{81E5E409-49E2-46A5-9F4A-66232DDF09B3}"
