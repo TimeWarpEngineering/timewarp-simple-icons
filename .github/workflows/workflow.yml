@@ -41,6 +41,13 @@ on:
         description: 'Sync icons from upstream simple-icons and publish if updated'
         type: boolean
         default: false
+      mode:
+        description: 'probe = trusted-publishing check only (OIDC login, no build, no publish). Leave default otherwise.'
+        type: choice
+        options:
+          - merge
+          - probe
+        default: merge
   schedule:
     - cron: '0 6 * * 0'
 
@@ -67,13 +74,19 @@ jobs:
         if: >-
           github.event_name == 'release' ||
           github.event_name == 'schedule' ||
-          (github.event_name == 'workflow_dispatch' && inputs.sync_icons)
+          (github.event_name == 'workflow_dispatch' && inputs.sync_icons) ||
+          (github.event_name == 'workflow_dispatch' && inputs.mode == 'probe')
         id: nuget-login
         uses: nuget/login@v1
         with:
           user: TimeWarp.Enterprises
 
+      - name: Trusted publishing probe result
+        if: github.event_name == 'workflow_dispatch' && inputs.mode == 'probe'
+        run: echo "Trusted publishing OK — OIDC exchange succeeded for this repo + workflow.yml."
+
       - name: Run CI Pipeline
+        if: github.event_name != 'workflow_dispatch' || inputs.mode != 'probe'
         env:
           # workflow command reads this for workflow_dispatch + sync path
           SYNC_ICONS: ${{ github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && inputs.sync_icons) }}
