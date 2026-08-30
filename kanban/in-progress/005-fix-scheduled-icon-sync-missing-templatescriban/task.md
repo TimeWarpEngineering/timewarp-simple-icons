@@ -14,11 +14,11 @@ Scheduled CI on `timewarp-simple-icons` fails during icon sync because `tools/tr
 
 ## Checklist
 
-- [ ] Resolve `template.scriban` from binary / project dir (see heroicons `ResolveTemplatePath`)
-- [ ] Skip non-`.svg` files with `continue` instead of `return`
-- [ ] Prove transform from repo-root CWD (repro of CI)
-- [ ] `bin/dev build` (and tests if any) green
-- [ ] Write `## Results` + `### How to validate`
+- [x] Resolve `template.scriban` from binary / project dir (see heroicons `ResolveTemplatePath`)
+- [x] Skip non-`.svg` files with `continue` instead of `return`
+- [x] Prove transform from repo-root CWD (repro of CI)
+- [x] `bin/dev build` (and tests if any) green
+- [x] Write `## Results` + `### How to validate`
 
 ## Notes
 
@@ -77,3 +77,61 @@ Prefer a tiny temp dir with one `.svg` (and one non-svg file to prove `continue`
 
 - Orchestrator: grok session 480965 (2026-08-30)
 - Created: 480965 (2026-08-30)
+- Implementer: grok (2026-08-30)
+
+## Results
+
+`tools/transform` locates `template.scriban` without depending on process CWD, using the same candidate list as timewarp-heroicons: binary dir (`CopyToOutputDirectory`), project dir via `../../../template.scriban`, CWD, and `tools/transform` under CWD. Non-`.svg` files in the input directory are skipped with `continue` so they no longer abort `Main`.
+
+Simple-icons SVG rewrite (inject `@attributes=Attributes` on the known `<svg>` opening tag) and component naming (leading non-letter → `_`, `Icon` suffix) are unchanged. Package version remains `16.27.1`; no icon tree regeneration and no NuGet publish.
+
+### Files changed
+
+- `tools/transform/Program.cs`
+
+### Decisions
+
+- Ported `ResolveTemplatePath` and parse-the-template-once from heroicons; did not copy size/namespace logic.
+- Did not change `update-icons` clone/tag handling (out of scope unless transform still failed after the path fix).
+- Did not run a full `update-icons` sync; local proof used a tiny SVG fixture from repo-root CWD and from `/tmp`.
+
+### Test outcomes
+
+- `dotnet run --project tools/transform/transform.csproj -- <in> <out>` from repo root: exit 0, no `FileNotFoundException` for `template.scriban`.
+- Same with `--no-launch-profile` and CWD=`/tmp`: exit 0, `GithubIcon.razor` written.
+- Non-svg fixture files produced no components; both fixture SVGs transformed.
+- `dotnet run tools/dev-cli/dev.cs -- build`: succeeded, 0 warnings, 0 errors. Packed package still `timewarp-simple-icons.16.27.1.nupkg`.
+- No dedicated test project in the solution besides `tests/sample-app`.
+
+### How to validate
+
+**Smoke**
+
+From the claim worktree, with CWD = repo root (not `tools/transform`):
+
+```bash
+IN=$(mktemp -d)
+OUT=$(mktemp -d)
+printf 'skip\n' > "$IN/notes.txt"
+cat > "$IN/github.svg" <<'EOF'
+<svg role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><title>GitHub</title><path d="M12 .297"/></svg>
+EOF
+dotnet run --project tools/transform/transform.csproj --no-launch-profile -- "$IN" "$OUT"
+```
+
+**Expect**
+
+- Exit 0 (no `FileNotFoundException` for `template.scriban` at repo root or `/tmp`)
+- `$OUT/GithubIcon.razor` exists, starts with `@namespace TimeWarp.Simple.Icons`, includes `@attributes=Attributes`
+- No razor file generated from `notes.txt`
+
+**Automated gate**
+
+```bash
+dotnet run tools/dev-cli/dev.cs -- build
+# expect: Build succeeded, 0 Warning(s), 0 Error(s)
+```
+
+`./bin/dev` is gitignored; the runfile invocation above is the same `build` endpoint. `./bin/dev build` is equivalent after `dotnet run tools/dev-cli/dev.cs -- self-install`.
+
+**Not in scope:** full `update-icons --push --publish` (network + NuGet). After this lands, scheduled CI should be able to bump 16.27.1 → latest simple-icons.
