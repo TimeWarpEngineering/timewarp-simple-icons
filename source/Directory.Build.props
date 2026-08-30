@@ -1,13 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project>
   <Import Project="$([MSBuild]::GetPathOfFileAbove('Directory.Build.props', '$(MSBuildThisFileDirectory)../'))" />
-
   <PropertyGroup Label="Packaging">
     <IsPackable>true</IsPackable>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
-
   <PropertyGroup Label="Package Metadata">
-    <Version>16.27.1</Version>
+    <Version>16.29.0</Version>
     <Authors>Steven T. Cramer</Authors>
     <Company>TimeWarp Enterprises</Company>
     <Description>All of the simple-icons wrapped as Blazor components.</Description>
@@ -19,7 +18,6 @@
     <PackageIcon>logo.png</PackageIcon>
     <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
-
   <ItemGroup Label="Package Content">
     <None Include="$(RepositoryRoot)assets/logo.png" Pack="true" PackagePath="\" />
     <None Include="$(RepositoryRoot)README.md" Pack="true" PackagePath="\" />
