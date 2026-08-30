@@ -19,6 +19,7 @@ Scheduled CI on `timewarp-simple-icons` fails during icon sync because `tools/tr
 - [x] Prove transform from repo-root CWD (repro of CI)
 - [x] `bin/dev build` (and tests if any) green
 - [x] Write `## Results` + `### How to validate`
+- [x] Implementation review (effort 1, general) + disposition on this id
 
 ## Notes
 
@@ -73,11 +74,16 @@ Prefer a tiny temp dir with one `.svg` (and one non-svg file to prove `continue`
 
 `bin/dev build` must pass.
 
+### Review kitchen
+
+Effort 1, general only, round 1. Disposition **clean** (0 open). Artifacts under `review/` (framework, `round-1/`, `disposition.md`). No sibling apply-findings task.
+
 ## Session
 
 - Orchestrator: grok session 480965 (2026-08-30)
 - Created: 480965 (2026-08-30)
 - Implementer: grok (2026-08-30)
+- Review: grok oracle (2026-08-30); general reviewer subagent `01a0532b-4c0f-7a20-964a-9dd1c3a0ae4b`
 
 ## Results
 
@@ -135,3 +141,16 @@ dotnet run tools/dev-cli/dev.cs -- build
 `./bin/dev` is gitignored; the runfile invocation above is the same `build` endpoint. `./bin/dev build` is equivalent after `dotnet run tools/dev-cli/dev.cs -- self-install`.
 
 **Not in scope:** full `update-icons --push --publish` (network + NuGet). After this lands, scheduled CI should be able to bump 16.27.1 → latest simple-icons.
+
+### Review
+
+- **Rounds:** 1
+- **Effort / roster:** 1 — general only
+- **Counts (final):** bug 0/0/0, suggestion 0/0/0, nit 0/0/0 (open/fixed/wontfix)
+- **Disposition:** clean (no issues raised; 0 open)
+- **Wontfix / escalations:** none
+- **Paths:**
+  - `kanban/in-progress/005-fix-scheduled-icon-sync-missing-templatescriban/review/review-framework.md`
+  - `kanban/in-progress/005-fix-scheduled-icon-sync-missing-templatescriban/review/round-1/general.md`
+  - `kanban/in-progress/005-fix-scheduled-icon-sync-missing-templatescriban/review/round-1/merged.md`
+  - `kanban/in-progress/005-fix-scheduled-icon-sync-missing-templatescriban/review/disposition.md`
