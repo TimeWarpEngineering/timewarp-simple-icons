@@ -6,7 +6,7 @@
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
   <PropertyGroup Label="Package Metadata">
-    <Version>16.30.0</Version>
+    <Version>16.31.0</Version>
     <Authors>Steven T. Cramer</Authors>
     <Company>TimeWarp Enterprises</Company>
     <Description>All of the simple-icons wrapped as Blazor components.</Description>
