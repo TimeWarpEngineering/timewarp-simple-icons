@@ -1,5 +1,9 @@
 # Releases
 
+## 16.35.0
+
+* Update to simple-icons version 16.35.0
+
 ## 16.32.0
 
 * Update to simple-icons version 16.32.0
